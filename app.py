@@ -35,12 +35,14 @@ def load_text2audio_model():
 
 
 def img2text(image):
+    """Generate a text description from the uploaded image."""
     image_to_text_model = load_img2text_model()
     text = image_to_text_model(image)[0]["generated_text"]
     return text.strip()
 
 
 def text2story(text):
+    """Generate a short child-friendly story based on the image description."""
     story_generator = load_story_model()
 
     prompt = (
@@ -94,6 +96,7 @@ def text2story(text):
 
 
 def text2audio(story_text):
+    """Convert the generated story into audio data."""
     audio_pipe = load_text2audio_model()
     audio_data = audio_pipe(story_text)
     return audio_data
