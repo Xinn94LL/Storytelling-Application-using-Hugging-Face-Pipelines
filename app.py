@@ -101,7 +101,7 @@ st.set_page_config(
     page_icon="🦄"
 )
 
-st.title("🪄 Image to Audio Storytelling App")
+st.title("Image to Audio Storytelling App")
 
 st.write(
     "Upload an image. The app will describe the image, generate a short story "
