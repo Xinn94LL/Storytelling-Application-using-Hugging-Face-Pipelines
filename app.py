@@ -44,7 +44,7 @@ def text2story(text):
     story_generator = load_story_model()
 
     prompt = (
-        f"Write a 50 to 70 word happy story for a 3 to 10-year-old child. "
+        f"Write a 50 to 100 word happy story for a 3 to 10-year-old child. "
         f"The story must be only about this image description: {text}. "
         "Use simple sentences, friendly characters, and a happy ending. "
         "Do not write about war, death, soldiers, scary events, or real people. "
