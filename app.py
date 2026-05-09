@@ -44,20 +44,25 @@ def text2story(text):
     story_generator = load_story_model()
 
     prompt = (
-        f"Write a short happy story for a 3 to 10-year-old kid about {text}. "
-        "The story should be 50 to 100 words."
+        f"Write a 50 to 70 word happy story for a 3 to 10-year-old child. "
+        f"The story must be only about this image description: {text}. "
+        "Use simple sentences, friendly characters, and a happy ending. "
+        "Do not write about war, death, soldiers, scary events, or real people. "
+        "Story:"
     )
 
     output = story_generator(
         prompt,
-        max_new_tokens=120,
-        min_new_tokens=40,
+        max_new_tokens=90,
+        min_new_tokens=45,
         do_sample=True,
-        temperature=0.7
+        temperature=0.6
     )[0]["generated_text"]
 
     if output.startswith(prompt):
         story_text = output[len(prompt):].strip()
+    elif "Story:" in output:
+        story_text = output.split("Story:", 1)[1].strip()
     else:
         story_text = output.strip()
 
@@ -65,23 +70,23 @@ def text2story(text):
     story_text = story_text.replace("\n", " ").strip()
     story_text = re.sub(r"\s+", " ", story_text)
 
-    # If the story is too long, trim it to the last complete sentence within 100 words
+    # Keep the story within 70 words so the full story can be converted into audio
     words = story_text.split()
-    if len(words) > 100:
-        first_100_words = " ".join(words[:100])
+    if len(words) > 70:
+        first_70_words = " ".join(words[:70])
 
-        last_period = first_100_words.rfind(".")
-        last_exclamation = first_100_words.rfind("!")
-        last_question = first_100_words.rfind("?")
+        last_period = first_70_words.rfind(".")
+        last_exclamation = first_70_words.rfind("!")
+        last_question = first_70_words.rfind("?")
 
         last_sentence_end = max(last_period, last_exclamation, last_question)
 
         if last_sentence_end != -1:
-            story_text = first_100_words[:last_sentence_end + 1]
+            story_text = first_70_words[:last_sentence_end + 1]
         else:
-            story_text = first_100_words + "."
+            story_text = first_70_words + "."
 
-    # If the story does not end with punctuation, add a period
+    # Make sure the story ends as a complete sentence
     if story_text and story_text[-1] not in ".!?":
         story_text += "."
 
