@@ -14,7 +14,7 @@ The application follows a three-stage pipeline:
    The uploaded image is processed by an image-to-text model to generate a short image description.
 
 2. **Text to Story**  
-   The image description is passed into a text-generation model to create a short story of around 50 to 70 words. The story is designed to be suitable for children aged 3 to 10.
+   The image description is passed into a text-generation model to create a short story of around 50 to 100 words. The story is designed to be suitable for children aged 3 to 10.
 
 3. **Text to Audio**  
    The generated story is converted into audio using a text-to-audio model. Users can listen to the final audio story directly in the Streamlit app.
