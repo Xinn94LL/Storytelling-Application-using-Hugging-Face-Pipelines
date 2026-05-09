@@ -61,19 +61,29 @@ def text2story(text):
     else:
         story_text = output.strip()
 
+    # Basic cleaning
     story_text = story_text.replace("\n", " ").strip()
     story_text = re.sub(r"\s+", " ", story_text)
 
+    # If the story is too long, trim it to the last complete sentence within 100 words
     words = story_text.split()
     if len(words) > 100:
-        story_text = " ".join(words[:100])
-        last_period = max(
-            story_text.rfind("."),
-            story_text.rfind("!"),
-            story_text.rfind("?")
-        )
-        if last_period != -1:
-            story_text = story_text[:last_period + 1]
+        first_100_words = " ".join(words[:100])
+
+        last_period = first_100_words.rfind(".")
+        last_exclamation = first_100_words.rfind("!")
+        last_question = first_100_words.rfind("?")
+
+        last_sentence_end = max(last_period, last_exclamation, last_question)
+
+        if last_sentence_end != -1:
+            story_text = first_100_words[:last_sentence_end + 1]
+        else:
+            story_text = first_100_words + "."
+
+    # If the story does not end with punctuation, add a period
+    if story_text and story_text[-1] not in ".!?":
+        story_text += "."
 
     return story_text
 
